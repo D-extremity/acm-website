@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:acm_website/widgets/logotitle.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,7 @@ CustomCard getMemberCard(Size size,Map<String,String> people) {
   return CustomCard(
     elevation: 8,
     width: size.width * 0.16,
-    height: size.height * 0.4,
+    height: size.height * 0.42,
     borderRadius: 10,
     color: const Color.fromRGBO(178, 242, 242, 0.47),
     hoverColor: const Color.fromRGBO(63, 244, 244, 0.35),

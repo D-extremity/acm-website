@@ -42,7 +42,7 @@ Widget getEventWidget(Size size, Map<String, String> event) {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade600,
                     foregroundColor: Colors.blue.shade50,
-                    shape: LinearBorder()),
+                    shape: const LinearBorder()),
                 onPressed: () {},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -98,7 +98,7 @@ Widget getEventWidgetOdd(Size size, Map<String, String> event) {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade600,
                     foregroundColor: Colors.blue.shade50,
-                    shape: LinearBorder()),
+                    shape: const LinearBorder()),
                 onPressed: () {},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

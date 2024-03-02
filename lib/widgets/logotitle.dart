@@ -1,11 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:acm_website/pages/blogpage.dart';
 import 'package:acm_website/pages/eventpage.dart';
 import 'package:acm_website/pages/homepage.dart';
-import 'package:acm_website/pages/loginregisterpage.dart';
 import 'package:acm_website/pages/teampage.dart';
+import 'package:acm_website/utils/scaffoldtoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+Map<String, dynamic> getMap = {};
+
+// ignore: camel_case_types
 class logotitle extends StatelessWidget {
   const logotitle({
     super.key,
@@ -32,14 +37,14 @@ class logotitle extends StatelessWidget {
                 Text(
                   "Association for Computing Machinery",
                   style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 0.61),
+                      color: const Color.fromRGBO(0, 0, 0, 0.61),
                       fontSize: size.width * 0.0176,
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
                   "Academy of Business and Engineering Science",
                   style: TextStyle(
-                      color: Color.fromRGBO(0, 0, 0, 0.61),
+                      color: const Color.fromRGBO(0, 0, 0, 0.61),
                       fontSize: size.width * 0.01,
                       fontWeight: FontWeight.w600),
                 ),
@@ -59,14 +64,14 @@ Row getNavigationButton(Size size, BuildContext context) {
     children: [
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: LinearBorder(),
+          shape: const LinearBorder(),
           foregroundColor: Colors.blue.shade700,
           backgroundColor: Colors.blue.shade100,
         ),
         onPressed: () {
           if (selectedPage != 0) {
             Navigator.of(context)
-                .push(CupertinoPageRoute(builder: (context) => HomePage()));
+                .push(CupertinoPageRoute(builder: (context) => const HomePage()));
             selectedPage = 0;
           }
         },
@@ -82,22 +87,22 @@ Row getNavigationButton(Size size, BuildContext context) {
       ),
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: LinearBorder(),
+          shape: const LinearBorder(),
           foregroundColor: Colors.blue.shade700,
           backgroundColor: Colors.blue.shade100,
         ),
-        onPressed: () {
+        onPressed: () async {
           //!! Uncomment it after creating BlogPage
-           if (selectedPage != 1) {
+          uploadedBlogs= await getBlogList();
+          if (selectedPage != 1) {
             Navigator.of(context)
-                .push(CupertinoPageRoute(builder: (context) => BlogPage()));
-           selectedPage = 1;
-
+                .push(CupertinoPageRoute(builder: (context) => const BlogPage()));
+            selectedPage = 1;
           }
         },
         child: InkWell(
           child: Text(
-            "Blog",
+            "Bytes",
             style: getTextStyle(size.width * 0.012),
           ),
         ),
@@ -107,7 +112,7 @@ Row getNavigationButton(Size size, BuildContext context) {
       ),
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: LinearBorder(),
+          shape: const LinearBorder(),
           foregroundColor: Colors.blue.shade700,
           backgroundColor: Colors.blue.shade100,
         ),
@@ -131,14 +136,14 @@ Row getNavigationButton(Size size, BuildContext context) {
       ),
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: LinearBorder(),
+          shape: const LinearBorder(),
           foregroundColor: Colors.blue.shade700,
           backgroundColor: Colors.blue.shade100,
         ),
         onPressed: () {
           if (selectedPage != 3) {
             Navigator.of(context)
-                .push(CupertinoPageRoute(builder: (context) => TeamPage()));
+                .push(CupertinoPageRoute(builder: (context) => const TeamPage()));
             selectedPage = 3;
           }
         },
@@ -150,22 +155,32 @@ Row getNavigationButton(Size size, BuildContext context) {
       ),
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: LinearBorder(),
+          shape: const LinearBorder(),
           foregroundColor: Colors.blue.shade700,
           backgroundColor: Colors.blue.shade100,
         ),
-        onPressed: () {
+        onPressed: () async {
+          if (!isloginpage) {
+            getScaffold("Loading...", Colors.orange, context);
+            getMap = await getAuth();
+          }
           //!! uncomment it after creating RegisterLogin Page
-           if (selectedPage != 4) {
+          if (selectedPage != 4) {
             Navigator.of(context)
-                .push(CupertinoPageRoute(builder: (context) => const LoginPage()));
-           selectedPage = 4;
-
+                .push(CupertinoPageRoute(builder: (context) => loginpage));
+            selectedPage = 4;
           }
         },
         child: InkWell(
-            child: Text("Login/Register",
-                style: getTextStyle(size.width * 0.012))),
+            child: isloginpage
+                ? Text(
+                    "Login/Register",
+                    style: getTextStyle(size.width * 0.012),
+                  )
+                : Text(
+                    "Profile",
+                    style: getTextStyle(size.width * 0.012),
+                  )),
       ),
       SizedBox(
         width: size.width * 0.02,
@@ -177,6 +192,6 @@ Row getNavigationButton(Size size, BuildContext context) {
 TextStyle getTextStyle(double size) {
   return TextStyle(
       fontSize: size,
-      color: Color.fromRGBO(0, 0, 0, 0.61),
+      color: const Color.fromRGBO(0, 0, 0, 0.61),
       fontWeight: FontWeight.w600);
 }

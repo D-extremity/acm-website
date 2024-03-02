@@ -1,5 +1,9 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
+import 'package:acm_website/firebase_methods/signup.dart';
 import 'package:acm_website/widgets/aboutacm.dart';
 import 'package:acm_website/widgets/logotitle.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,7 +13,30 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-
+var isloginpage = false;
+late var loginpage;
+Map<String, dynamic> userDetails = {};
+String name = "";
+String branch = "";
+String linkedin = "";
+String github = "";
+String emailid = "";
+getAuth() async {
+  // isloginpage = await FirebaseAuth.instance.authStateChanges().isEmpty;
+  // print(isloginpage);
+  // loginpage = isloginpage ? const LoginPage() : const UserProfilePage();
+  // if (isloginpage) {
+  // print(FirebaseAuth.instance.currentUser!.uid);
+  userDetails = await getUserDetails(FirebaseAuth.instance.currentUser!.uid);
+  name = userDetails['name'];
+  branch = userDetails['branch'];
+  linkedin = userDetails['linkedin'];
+  github = userDetails['github'];
+  emailid = userDetails['email'];
+  // print(userDetails);
+  return userDetails;
+  // }
+}
 
 class _HomePageState extends State<HomePage> {
   @override
@@ -48,8 +75,8 @@ class _HomePageState extends State<HomePage> {
               Column(
                 children: [
                   getAboutACM(size),
-                  getEvent(size),
-                  getBytesACM(size),
+                  getEvent(size, context),
+                  getBytesACM(size, context),
                 ],
               ),
             ],

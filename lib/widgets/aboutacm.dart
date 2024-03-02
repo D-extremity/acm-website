@@ -1,6 +1,9 @@
+import 'package:acm_website/pages/blogpage.dart';
+import 'package:acm_website/pages/eventpage.dart';
 import 'package:acm_website/utils/stringutils.dart';
 import 'package:acm_website/widgets/logotitle.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:lottie/lottie.dart';
@@ -32,7 +35,7 @@ Widget getAboutACM(Size size) {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade600,
                     foregroundColor: Colors.blue.shade50,
-                    shape: LinearBorder()),
+                    shape: const LinearBorder()),
                 onPressed: () {},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -53,7 +56,7 @@ Widget getAboutACM(Size size) {
   );
 }
 
-Widget getEvent(Size size) {
+Widget getEvent(Size size, BuildContext context) {
   List<Widget> eventImages = <Widget>[
     Image.asset("assets/hacks.jpg",
         height: size.height * 0.8, width: size.width * 0.4),
@@ -76,7 +79,7 @@ Widget getEvent(Size size) {
           options: CarouselOptions(
             // height: 400.0,
             showIndicator: true,
-            slideIndicator: CircularSlideIndicator(),
+            slideIndicator: const CircularSlideIndicator(),
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 6),
             autoPlayAnimationDuration: const Duration(milliseconds: 800),
@@ -108,8 +111,14 @@ Widget getEvent(Size size) {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade600,
                     foregroundColor: Colors.blue.shade50,
-                    shape: LinearBorder()),
-                onPressed: () {},
+                    shape: const LinearBorder()),
+                onPressed: () {
+                  if (selectedPage != 2) {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => const EventPage()));
+                    selectedPage = 2;
+                  }
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -127,7 +136,7 @@ Widget getEvent(Size size) {
   );
 }
 
-Widget getBytesACM(Size size) {
+Widget getBytesACM(Size size, BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
@@ -154,8 +163,14 @@ Widget getBytesACM(Size size) {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade600,
                     foregroundColor: Colors.blue.shade50,
-                    shape: LinearBorder()),
-                onPressed: () {},
+                    shape: const LinearBorder()),
+                onPressed: () {
+                  if (selectedPage != 1) {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: (context) => const BlogPage()));
+                    selectedPage = 1;
+                  }
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
