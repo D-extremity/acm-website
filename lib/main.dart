@@ -1,7 +1,12 @@
 import 'package:acm_website/firebase_options.dart';
-import 'package:acm_website/pages/homepage.dart';
+import 'package:acm_website/mobilelayout/mobilepages/mobilehomepage.dart'
+    as mobile;
+import 'package:acm_website/mobilelayout/mobilepages/mobileloginregispage.dart';
+import 'package:acm_website/mobilelayout/mobilepages/mobileuserprofilepage.dart';
+import 'package:acm_website/pages/homepage.dart' as web;
 import 'package:acm_website/pages/loginregisterpage.dart';
 import 'package:acm_website/pages/userprofilepage.dart';
+import 'package:acm_website/responsiveui/responsive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,15 +35,27 @@ class MyApp extends StatelessWidget {
                 ),
               ));
             } else if (snapshot.hasData) {
-              loginpage = UserProfilePage(detail: userDetails,);
-              getAuth();
-              isloginpage = false;
+              web.loginpage = UserProfilePage(
+                detail: web.userDetails,
+              );
+              mobile.mobileloginpage = MobileUserProfilePage(
+                detail: mobile.userDetails,
+              );
+              web.getAuth();
+              mobile.getAuth();
+              web.isloginpage = false;
+              mobile.isMobileloginpage = false;
+
               // print(userDetails);
-              return const HomePage();
+              return const ResponsiveLayout(
+                  mobileLayout: mobile.MobileHomePage(), webLayout: web.HomePage());
             } else {
-              loginpage = const LoginPage();
-              isloginpage = true;
-              return const HomePage();
+              web.loginpage = const LoginPage();
+              web.isloginpage = true;
+              mobile.mobileloginpage = const MobileLoginPage();
+              mobile.isMobileloginpage = true;
+              return const ResponsiveLayout(
+                  mobileLayout: mobile.MobileHomePage(), webLayout: web.HomePage());
             }
           }),
       theme: ThemeData(useMaterial3: true),

@@ -1,8 +1,7 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:acm_website/firebase_methods/signup.dart';
-import 'package:acm_website/widgets/aboutacm.dart';
-import 'package:acm_website/widgets/logotitle.dart';
+import 'package:acm_website/mobilelayout/mobilewidgets/aboutacm.dart';
+import 'package:acm_website/mobilelayout/mobilewidgets/logotitle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +12,8 @@ class MobileHomePage extends StatefulWidget {
   State<MobileHomePage> createState() => _MobileHomePageState();
 }
 
-var isloginpage = false;
-late var loginpage;
+var isMobileloginpage = false;
+late var mobileloginpage;
 Map<String, dynamic> userDetails = {};
 String name = "";
 String branch = "";
@@ -23,11 +22,6 @@ String github = "";
 String emailid = "";
 String uid = "";
 getAuth() async {
-  // isloginpage = await FirebaseAuth.instance.authStateChanges().isEmpty;
-  // print(isloginpage);
-  // loginpage = isloginpage ? const LoginPage() : const UserProfilePage();
-  // if (isloginpage) {
-  // print(FirebaseAuth.instance.currentUser!.uid);
   userDetails = await getUserDetails(FirebaseAuth.instance.currentUser!.uid);
   name = userDetails['name'];
   branch = userDetails['branch'];
@@ -46,6 +40,8 @@ class _MobileHomePageState extends State<MobileHomePage> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
+          drawer:getDrawer(size, context) ,
+          appBar: AppBar(title: Mobilelogotitle(size: size),),
       body: Stack(fit: StackFit.loose, children: [
         SizedBox(
           width: double.infinity,
@@ -63,22 +59,25 @@ class _MobileHomePageState extends State<MobileHomePage> {
               const SizedBox(
                 height: 6,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  logotitle(size: size),
-                  getNavigationButton(size, context),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     // getMobileNavigationButton(size, context),
+              //   ],
+              // ),
               //!!! Custom Navigation Bar
               const SizedBox(
                 height: 20,
               ),
               Column(
                 children: [
-                  getAboutACM(size),
-                  getEvent(size, context),
-                  getBytesACM(size, context),
+                  getMobileAboutACM(size),
+                  SizedBox(height: 10,),
+                  getMobileEvent(size, context),
+                  SizedBox(height: 10,),
+                  getMobileBytesACM(size, context),
+                  SizedBox(height: 10,),
+
                 ],
               ),
               Center(
