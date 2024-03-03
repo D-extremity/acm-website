@@ -5,6 +5,7 @@ import 'package:acm_website/utils/scaffoldtoast.dart';
 import 'package:acm_website/widgets/blogwidget.dart';
 import 'package:acm_website/widgets/logotitle.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -105,13 +106,17 @@ class _BlogPageState extends State<BlogPage> {
                       // reverse: true,
                       primary: false,
                       children: [
-                        for (int i = uploadedBlogs.length-1; i >-1; i--) ...[
-                          getBlogWidget(size, uploadedBlogs[i].data()),
+                        for (int i = uploadedBlogs.length - 1; i > -1; i--) ...[
+                          getBlogWidget(size, uploadedBlogs[i].data(),context),
                         ]
                       ],
                     ),
                   )
                 ],
+              ),
+              Center(
+                child: Text("Made with 💖 by Satyam Srivastav",
+                    style: getTextStyle(size.width*0.016)),
               ),
             ],
           ),
@@ -123,11 +128,8 @@ class _BlogPageState extends State<BlogPage> {
 
 Future<void> uploadBlog(String blog) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  await firestore.collection('blogs').doc().set({
-    'blog': blog,
-    'date': DateTime.now(),
-    'name': name,
-  });
+  await firestore.collection('blogs').doc().set(
+      {'blog': blog, 'date': DateTime.now(), 'name': name, 'uidOfPerson': uid});
 }
 
 List<QueryDocumentSnapshot<Map<String, dynamic>>> uploadedBlogs = [];
@@ -136,4 +138,10 @@ Future getBlogList() async {
   final snap = await firestore.collection("blogs").get();
   // print(snap.docs[0].data() as Map<String, dynamic>);
   return snap.docs;
+}
+
+Future<Map<String, dynamic>> getBlogUserDetails(String uid) async {
+  final DocumentSnapshot snap =
+      await FirebaseFirestore.instance.collection("users").doc(uid).get();
+  return (snap.data() as Map<String, dynamic>);
 }

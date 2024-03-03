@@ -108,6 +108,10 @@ class _TeamPageState extends State<TeamPage> {
               const SizedBox(
                 height: 60,
               ),
+              Center(
+                child: Text("Made with 💖 by Satyam Srivastav",
+                    style: getTextStyle(size.width*0.016)),
+              ),
             ],
           ),
         )

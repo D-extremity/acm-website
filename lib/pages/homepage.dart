@@ -21,6 +21,7 @@ String branch = "";
 String linkedin = "";
 String github = "";
 String emailid = "";
+String uid = "";
 getAuth() async {
   // isloginpage = await FirebaseAuth.instance.authStateChanges().isEmpty;
   // print(isloginpage);
@@ -33,6 +34,7 @@ getAuth() async {
   linkedin = userDetails['linkedin'];
   github = userDetails['github'];
   emailid = userDetails['email'];
+  uid = userDetails['uid'];
   // print(userDetails);
   return userDetails;
   // }
@@ -78,6 +80,10 @@ class _HomePageState extends State<HomePage> {
                   getEvent(size, context),
                   getBytesACM(size, context),
                 ],
+              ),
+              Center(
+                child: Text("Made with 💖 by Satyam Srivastav",
+                    style: getTextStyle(size.width*0.016)),
               ),
             ],
           ),

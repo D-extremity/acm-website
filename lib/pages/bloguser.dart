@@ -1,25 +1,22 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:acm_website/firebase_methods/signup.dart';
 import 'package:acm_website/pages/homepage.dart';
-import 'package:acm_website/pages/loginregisterpage.dart';
 
 import 'package:acm_website/widgets/logotitle.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class UserProfilePage extends StatefulWidget {
+class BlogUserPage extends StatefulWidget {
   final Map<String, dynamic> detail;
-  const UserProfilePage({super.key, required this.detail});
+  const BlogUserPage({super.key, required this.detail});
 
   @override
-  State<UserProfilePage> createState() => _UserProfilePageState();
+  State<BlogUserPage> createState() => _BlogUserPageState();
 }
 
-class _UserProfilePageState extends State<UserProfilePage> {
+class _BlogUserPageState extends State<BlogUserPage> {
   List<Color> colorizeColors = [
     Colors.purple,
     Colors.blue,
@@ -85,12 +82,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       animatedTexts: [
                         ColorizeAnimatedText(
                           'ACM ABESEC',
-                          textStyle: getTextStyle(size.width * 0.08),
+                          textStyle: getTextStyle(size.width * 0.06),
                           colors: colorizeColors,
                         ),
                         ColorizeAnimatedText(
                           'ACM-W ABESEC',
-                          textStyle: getTextStyle(size.width * 0.08),
+                          textStyle: getTextStyle(size.width * 0.06),
                           colors: colorizeColors,
                         ),
                       ],
@@ -104,51 +101,63 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     width: size.width * 0.3,
                     child: Column(
                       children: [
-                        CupertinoTextField(
-                          placeholder: "Name",
-                          controller: getname,
+                        Text(
+                          widget.detail['name'],
+                          style: getTextStyle(size.width * 0.02),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        CupertinoTextField(
-                          placeholder: "E-mail id",
-                          controller: getEmail,
+                        Text(
+                          widget.detail['branch'],
+                          style: getTextStyle(size.width * 0.02),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        CupertinoTextField(
-                          placeholder: "Branch",
-                          controller: getbranch,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        CupertinoTextField(
-                          placeholder: "Github link",
-                          controller: getgithub,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        CupertinoTextField(
-                          placeholder: "Linkedin link",
-                          controller: getlinkedin,
-                        ),
-                        const SizedBox(
-                          height: 10,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                await _launchUrl(widget.detail['github']);
+                              },
+                              child: Image.asset(
+                                "assets/github.png",
+                                height: 40,
+                                width: 40,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                await _launchUrl(widget.detail['linkedin']);
+                              },
+                              child: Image.asset(
+                                "assets/linkedin.png",
+                                height: 40,
+                                width: 40,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         ElevatedButton(
-                          onPressed: () async {},
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue.shade800,
                               foregroundColor: Colors.blue.shade200),
                           child: const Text(
-                            "Update",
+                            "Back",
                             style: TextStyle(color: Colors.white),
                           ),
                         )
@@ -158,23 +167,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   const SizedBox(
                     height: 30,
                   ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await FirebaseAuthMethods(FirebaseAuth.instance, context)
-                          .signout();
-                      loginpage = const LoginPage();
-                      Navigator.of(context).pushReplacement(
-                          CupertinoPageRoute(builder: (context) => const HomePage()));
-                      selectedPage = 0;
-                      setState(() {});
-                    },
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: const Text(
-                      "Sign Out",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  )
                 ],
               ),
               Center(
@@ -186,5 +178,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
         )
       ]),
     ));
+  }
+}
+
+Future<void> _launchUrl(String _url) async {
+  if (!await launchUrl(Uri.parse(_url))) {
+    throw Exception('Could not launch $_url');
   }
 }

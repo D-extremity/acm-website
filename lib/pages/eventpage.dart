@@ -53,10 +53,14 @@ class _EventPageState extends State<EventPage> {
                       getEventWidgetOdd(size, eventDetails[i]),
                     ],
                     const SizedBox(
-                      height: 12,
+                      height: 30,
                     ),
                   ]
                 ],
+              ),
+              Center(
+                child: Text("Made with 💖 by Satyam Srivastav",
+                    style: getTextStyle(size.width*0.016)),
               ),
             ],
           ),

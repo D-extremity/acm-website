@@ -282,7 +282,14 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         ),
+                  SizedBox(
+                    height: size.height * 0.36,
+                  )
                 ],
+              ),
+              Center(
+                child: Text("Made with 💖 by Satyam Srivastav",
+                    style: getTextStyle(size.width * 0.016)),
               ),
             ],
           ),
